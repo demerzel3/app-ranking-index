@@ -3,9 +3,7 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 import { fetchUSFinanceAppIds } from "../src/lib/appStore";
 import { fetchExchangesWeighted } from "../src/lib/coingecko";
 import { storeInHistory } from "../src/lib/database";
-import { getPool } from "../src/lib/getPool";
 import { EXCHANGE_META } from "../src/lib/meta";
-import { postToSlack } from "../src/lib/slack";
 import { Details, ExchangeName } from "../src/lib/types";
 
 export default async function handler(
@@ -46,8 +44,7 @@ export default async function handler(
         0
     );
 
-    await postToSlack(index, details);
-    await storeInHistory(getPool(), index, details);
+    await storeInHistory(index, details);
 
     response.json({ index, details }).end();
 }
