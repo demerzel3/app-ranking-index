@@ -5,12 +5,35 @@ import { Details } from "./types";
 
 const { SLACK_BOT_TOKEN, SLACK_CHANNEL } = process.env;
 
+// Borrowed from the one and only bitcoin rainbow cart.
+const getIndexDescription = (index: number): string => {
+    switch (true) {
+        case index <= 10: // 0-10
+            return "basically a fire sale.";
+        case index <= 20: // 10-20
+            return "BUY!";
+        case index <= 30:
+            return "accumulate.";
+        case index <= 40:
+            return "still cheap.";
+        case index <= 60: // 40-60
+            return "hold (or buy more, I won't judge).";
+        case index <= 70:
+            return "is this a bubble?";
+        case index <= 80:
+            return "FOMO intensifies.";
+        case index <= 90:
+            return "sell. Seriously, SELL!";
+        default: // 90-100
+            return "maximum bubble territory.";
+    }
+};
+
 export const postToSlack = (index: number, details: Details[]) => {
     const displayIndex = Math.round(index * 100);
-    // TODO: define thresholds and different definitions
-    const indexDescription = "near the bottom";
-    const summary = `Time to buy!\nIndex is at *${displayIndex}* (${indexDescription})`;
-    const summaryPlain = `Time to buy! Index is at ${displayIndex} (${indexDescription})`;
+    const indexDescription = getIndexDescription(displayIndex);
+    const summary = `Index is at *${displayIndex}*, ${indexDescription}`;
+    const summaryPlain = `Index is at ${displayIndex}, ${indexDescription}`;
     const detailsByRankingAndWeight = [...details].sort((det1, det2) => {
         if (det2.ranking === null && det1.ranking !== null) {
             return -1;
