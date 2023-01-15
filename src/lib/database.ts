@@ -14,7 +14,7 @@ export const storeInHistory = async (index: number, details: Details[]) => {
             "INSERT INTO history (time, value, details) VALUES (round(extract(epoch from now())), $1, $2)",
             [index, JSON.stringify(details)]
         );
-    } catch (err) {
+    } catch (err: any) {
         console.log(err.stack);
     } finally {
         client.release();
@@ -38,7 +38,7 @@ export const getLatestEntry = async (): Promise<HistoryEntry | undefined> => {
             value: parseFloat(value),
             details,
         };
-    } catch (err) {
+    } catch (err: any) {
         console.log(err.stack);
     } finally {
         client.release();
