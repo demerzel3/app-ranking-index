@@ -7,6 +7,36 @@ type HistoryEntry = {
     details: Details[];
 };
 
+export const readHistory = async ({
+    fromTime,
+    toTime,
+}: {
+    fromTime: number;
+    toTime?: number;
+}): Promise<HistoryEntry[]> => {
+    const client = await getPool().connect();
+    try {
+        const result =
+            typeof toTime === "number"
+                ? await client.query(
+                      "SELECT * FROM history WHERE time >= $1 AND time <= $2 ORDER BY time limit 1000",
+                      [fromTime, toTime]
+                  )
+                : await client.query(
+                      "SELECT * FROM history WHERE time >= $1 ORDER BY time limit 1000",
+                      [fromTime]
+                  );
+
+        return result.rows.map(parseHistoryEntry);
+    } catch (err: any) {
+        console.log(err.stack);
+    } finally {
+        client.release();
+    }
+
+    return [];
+};
+
 export const storeInHistory = async (index: number, details: Details[]) => {
     const client = await getPool().connect();
     try {
@@ -32,15 +62,20 @@ export const getLatestEntry = async (): Promise<HistoryEntry | undefined> => {
             return undefined;
         }
 
-        const { time, value, details } = result.rows[0];
-        return {
-            time: parseFloat(time),
-            value: parseFloat(value),
-            details,
-        };
+        return parseHistoryEntry(result.rows[0]);
     } catch (err: any) {
         console.log(err.stack);
     } finally {
         client.release();
     }
 };
+
+function parseHistoryEntry(row: any): HistoryEntry {
+    const { time, value, details } = row;
+
+    return {
+        time: parseFloat(time),
+        value: parseFloat(value),
+        details,
+    };
+}

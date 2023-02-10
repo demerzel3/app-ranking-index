@@ -1,6 +1,6 @@
 import { ExchangeName } from "./types";
 
-type ExchangeMeta = {
+export type ExchangeMeta = {
     displayName: string;
     appId: string;
     iconUrl: string;
