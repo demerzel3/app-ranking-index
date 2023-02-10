@@ -3,6 +3,9 @@ import "./index.css";
 import {
     CategoryScale,
     Chart,
+    Decimation,
+    Filler,
+    Legend,
     LinearScale,
     LineElement,
     PointElement,
@@ -14,7 +17,15 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { sendToVercelAnalytics } from "./vitals";
 
-Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
+Chart.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Legend,
+    Decimation,
+    Filler
+);
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
