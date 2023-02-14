@@ -9,7 +9,9 @@ import {
     LinearScale,
     LineElement,
     PointElement,
+    Tooltip,
 } from "chart.js";
+import ZoomPlugin from "chartjs-plugin-zoom";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -24,7 +26,9 @@ Chart.register(
     LineElement,
     Legend,
     Decimation,
-    Filler
+    Filler,
+    Tooltip,
+    ZoomPlugin
 );
 
 const root = createRoot(document.getElementById("root")!);
