@@ -85,6 +85,8 @@ export const Chart = () => {
                 ],
             }}
             options={{
+                maintainAspectRatio: false,
+                responsive: true,
                 elements: {
                     point: {
                         pointStyle: false,
@@ -166,6 +168,9 @@ export const Chart = () => {
                             wheel: {
                                 enabled: true,
                                 speed: 0.025,
+                            },
+                            pinch: {
+                                enabled: true,
                             },
                         },
                         pan: {
